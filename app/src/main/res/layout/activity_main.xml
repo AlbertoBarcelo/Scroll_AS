@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/scrolling_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:padding="8dp"
+        android:text="Beatles Anthology Vol. 1"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/scrolling_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scrolling_title"
+        android:padding="8dp"
+        android:text="Behind That Locked Door: Beatles Rarities!"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <ScrollView
+        android:id="@+id/scrolling_area"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/scrolling_subtitle"
+        android:layout_above="@id/add_comment_button"
+        android:layout_weight="1"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/comments_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/scrolling_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:autoLink="web"
+                android:textColor="#000000"
+                android:text="@string/scrolling_text" />
+
+            <EditText
+                android:id="@+id/comment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/add_comment_button"
+                android:hint="Escribe tu comentario aquí..."
+                android:padding="8dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/add_comment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Comment"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp" />
+
+</RelativeLayout>
