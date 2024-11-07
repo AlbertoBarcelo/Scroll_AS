@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addCommentButton;
     private EditText commentEditText;
     private LinearLayout commentsContainer;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,28 +25,34 @@ public class MainActivity extends AppCompatActivity {
         addCommentButton = findViewById(R.id.add_comment_button);
         commentEditText = findViewById(R.id.comment_edit_text);
         commentsContainer = findViewById(R.id.comments_container);
-        ScrollView scrollView = findViewById(R.id.scrolling_area);
+        scrollView = findViewById(R.id.scrolling_area);
 
+        // Ocultar el botón "Add Comment" inicialmente
+        addCommentButton.setVisibility(View.GONE);
+
+        // Mostrar el botón "Add Comment" solo cuando el usuario llegue al final del ScrollView
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
+            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-            if (diff <= 0) {
+            if (diff <= 0) { // Si diff es 0 o menos, significa que el usuario ha llegado al final del scroll
                 addCommentButton.setVisibility(View.VISIBLE);
             }
         });
 
+        // Configurar el botón "Add Comment" para mostrar el EditText para comentarios
         addCommentButton.setOnClickListener(view -> {
-            commentEditText.setVisibility(View.VISIBLE);
+            commentEditText.setVisibility(View.VISIBLE); // Mostrar el campo de entrada para el comentario
             commentEditText.requestFocus();
         });
 
+        // Configurar el EditText para agregar el comentario cuando el usuario presiona "Done"
         commentEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String comment = commentEditText.getText().toString().trim();
                 if (!comment.isEmpty()) {
-                    addCommentToContainer(comment);
-                    commentEditText.setText("");
-                    commentEditText.setVisibility(View.GONE);
+                    addCommentToContainer(comment); // Agrega el comentario al contenedor de comentarios
+                    commentEditText.setText(""); // Limpia el campo de texto
+                    commentEditText.setVisibility(View.GONE); // Oculta el EditText después de enviar el comentario
                 }
                 return true;
             }
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Método para añadir el comentario dinámicamente al contenedor
     private void addCommentToContainer(String comment) {
         TextView commentTextView = new TextView(this);
         commentTextView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -61,6 +69,6 @@ public class MainActivity extends AppCompatActivity {
         commentTextView.setText(comment);
         commentTextView.setTextSize(16);
         commentTextView.setPadding(8, 8, 8, 8);
-        commentsContainer.addView(commentTextView);
+        commentsContainer.addView(commentTextView); // Agrega el comentario al LinearLayout
     }
 }
