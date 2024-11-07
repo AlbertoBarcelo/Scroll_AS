@@ -19,7 +19,7 @@
         android:textStyle="bold"
         android:gravity="center" />
 
-    <!-- Contenedor del título principal y el contenido desplazable -->
+    <!-- Título principal del contenido desplazable -->
     <TextView
         android:id="@+id/scrolling_title"
         android:layout_width="match_parent"
@@ -33,66 +33,91 @@
         android:textStyle="bold"
         android:gravity="center" />
 
-    <!-- ScrollView para contenido desplazable, debajo del título principal -->
+    <!-- ScrollView para el contenido desplazable, ocupando solo el espacio necesario -->
     <ScrollView
         android:id="@+id/scrolling_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@id/scrolling_title"
+        android:layout_above="@id/comment_area"
+        android:layout_weight="1"
         android:paddingTop="8dp">
 
         <!-- LinearLayout para los textos y comentarios -->
         <LinearLayout
             android:id="@+id/comments_container"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <!-- Subtítulo alineado a la izquierda -->
+            <TextView
+                android:id="@+id/scrolling_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="8dp"
+                android:text="@string/subtitle_text"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <!-- Texto principal alineado a la derecha -->
+            <TextView
+                android:id="@+id/scrolling_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="16sp"
+                android:autoLink="web"
+                android:textColor="#000000"
+                android:text="@string/scrolling_text" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Sección de comentario y botones, colocada debajo del ScrollView -->
+    <LinearLayout
+        android:id="@+id/comment_area"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="8dp">
 
-        <!-- Subtítulo alineado
-         a la izquierda -->
-        <TextView
-            android:id="@+id/scrolling_subtitle"
-            android:layout_width="0dp"
+        <!-- EditText para ingresar comentario, inicialmente oculto -->
+        <EditText
+            android:id="@+id/comment_edit_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingEnd="8dp"
-            android:text="@string/subtitle_text"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:hint="Escribe tu comentario aquí..."
+            android:padding="8dp"
+            android:background="#FFFFFF"
+            android:visibility="gone"/>
 
-        <!-- Texto principal alineado a la derecha -->
-        <TextView
-            android:id="@+id/scrolling_text"
-            android:layout_width="0dp"
+        <!-- Botones, alineados horizontalmente debajo del comentario -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="16sp"
-            android:autoLink="web"
-            android:textColor="#000000"
-            android:text="@string/scrolling_text" />
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/add_comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Comment"
+                android:padding="8dp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/edit_text_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Text"
+                android:padding="8dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
     </LinearLayout>
-</ScrollView>
-
-    <!-- Botón para añadir comentarios, alineado en la parte inferior -->
-<Button
-android:id="@+id/add_comment_button"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Add Comment"
-android:layout_centerHorizontal="true"
-android:layout_alignParentBottom="true"
-android:padding="8dp" />
-
-    <!-- EditText para ingresar comentario, inicialmente oculto, encima del botón -->
-<EditText
-android:id="@+id/comment_edit_text"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_above="@id/add_comment_button"
-android:hint="Escribe tu comentario aquí..."
-android:padding="8dp"
-    android:background="#FFFFFF"
-android:visibility="gone"/>
-    </RelativeLayout>
+</RelativeLayout>

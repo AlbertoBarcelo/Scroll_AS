@@ -13,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button addCommentButton;
+    private Button editTextButton;
     private EditText commentEditText;
+    private EditText editScrollingText; // EditText temporal para editar el texto principal
     private LinearLayout commentsContainer;
     private ScrollView scrollView;
+    private TextView scrollingText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,19 +26,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addCommentButton = findViewById(R.id.add_comment_button);
+        editTextButton = findViewById(R.id.edit_text_button);
         commentEditText = findViewById(R.id.comment_edit_text);
         commentsContainer = findViewById(R.id.comments_container);
         scrollView = findViewById(R.id.scrolling_area);
+        scrollingText = findViewById(R.id.scrolling_text);
 
-        // Ocultar el botón "Add Comment" inicialmente
+        // Ocultar los botones inicialmente
         addCommentButton.setVisibility(View.GONE);
+        editTextButton.setVisibility(View.GONE);
 
-        // Mostrar el botón "Add Comment" solo cuando el usuario llegue al final del ScrollView
+        // Mostrar los botones solo cuando el usuario llega al final del ScrollView
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
             if (diff <= 0) { // Si diff es 0 o menos, significa que el usuario ha llegado al final del scroll
                 addCommentButton.setVisibility(View.VISIBLE);
+                editTextButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -57,6 +64,34 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+
+        // Configurar el botón "Edit Text" para permitir la edición del texto principal
+        editTextButton.setOnClickListener(view -> {
+            // Crear un EditText temporal para editar el texto principal
+            editScrollingText = new EditText(this);
+            editScrollingText.setText(scrollingText.getText());
+            editScrollingText.setLayoutParams(scrollingText.getLayoutParams());
+            editScrollingText.setTextSize(16);
+            editScrollingText.setTextColor(scrollingText.getCurrentTextColor());
+            editScrollingText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+            // Reemplazar el TextView `scrolling_text` con el EditText `editScrollingText`
+            int index = commentsContainer.indexOfChild(scrollingText);
+            commentsContainer.removeView(scrollingText);
+            commentsContainer.addView(editScrollingText, index);
+
+            // Manejar el "Done" en el teclado para guardar los cambios
+            editScrollingText.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Actualizar el texto principal con el texto editado
+                    scrollingText.setText(editScrollingText.getText().toString());
+                    commentsContainer.removeView(editScrollingText); // Eliminar el EditText temporal
+                    commentsContainer.addView(scrollingText, index); // Volver a agregar el TextView original
+                    return true;
+                }
+                return false;
+            });
         });
     }
 
